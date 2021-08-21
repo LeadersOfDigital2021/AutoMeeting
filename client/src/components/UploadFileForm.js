@@ -3,20 +3,20 @@ function UploadFileForm(props) {
         <form className="mt-3 space-y-3" action="#" method="POST">
         <div className="grid grid-cols-1 space-y-2">
             <label className="text-sm font-bold text-gray-500 tracking-wide">
-                Attach Document
+                Прикрепите документ
             </label>
             <div className="drop-area flex items-center justify-center w-full">
                 <label className="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
                     <div className="h-full w-full text-center flex flex-col items-center justify-center items-center  ">
                         <p className="pointer-none text-gray-500 ">
                             <span className="text-sm">
-                                Drag and drop
+                                Перетащите файл
                             </span>{" "}
-                            files here <br /> or{" "}
+                            сюда <br /> или{" "}
                             <span className="text-blue-600 hover:underline">
-                                select a file
+                                выберите файл
                             </span>{" "}
-                            from your computer
+                            с вашего компьютера
                         </p>
                     </div>
                     <input

@@ -7,7 +7,7 @@ function UploadedFile(props) {
                 <i className="fas fa-file-alt"></i>
                 <div className="details">
                     <span className="name">
-                        {displayFileName(props.item.fileName)} • Uploaded
+                        {displayFileName(props.item.fileName)} • Загружен
                     </span>
                     <span className="size">{props.item.fileSize}</span>
                 </div>

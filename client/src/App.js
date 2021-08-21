@@ -75,7 +75,7 @@ function App() {
             })
             .then((result) => {
                 console.log(result.data);
-                result.data.success ? toast.info('File uploaded.') : toast.warning('Something was wrong.') 
+                result.data.success ? toast.info('Файл загружен') : toast.warning('Что-то пошло не так...') 
                 dispatch({
                     type: "SET_IS_PENDING",
                     data: { fileName, value: false },
@@ -105,7 +105,7 @@ function App() {
             <div className="sm:max-w-lg w-full p-10 bg-white rounded-xl z-10">
                 <div className="text-center">
                     <h2 className="text-3xl font-bold text-gray-900">
-                        File Upload!
+                        Загрузка записи
                     </h2>
                 </div>
 

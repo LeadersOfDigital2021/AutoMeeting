@@ -7,7 +7,7 @@ function UploadingFile(props) {
             <div className="content">
                 <div className="details">
                     <span className="name">
-                        {displayFileName(props.fileName)} • Uploading
+                        {displayFileName(props.fileName)} • Загрузка...
                     </span>
                     <span className="percent">{props.progress}%</span>
                 </div>

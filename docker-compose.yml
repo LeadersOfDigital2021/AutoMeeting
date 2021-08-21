@@ -7,3 +7,10 @@ services:
       - '8080:5000'
     volumes:
       - './server:/app'
+  client:
+    build: ./client
+    image: client:latest
+    ports:
+      - '8000:3000'
+    volumes:
+      - './client:/app'

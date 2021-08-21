@@ -89,9 +89,9 @@ function App() {
 
     return (
         <ContextApp.Provider value={{ dispatch, state }}>
-                {state.isProtocolCreating ? (
+                {state.isProtocolCreating ?
                     <ProtocolCreationForm />
-                ) : (
+                : (
                     <div className="sm:max-w-lg w-full p-10 bg-white rounded-xl z-10">
                         
                         <UploadFormTitle />
@@ -105,19 +105,20 @@ function App() {
                                     fileName={fileName}
                                 />
                             </section>
-                        ) : (
-                            <section className="progress-area"></section>
-                        )}
+                        ) : 
+                            <section className="progress-area"/>
+                        }
 
                         {state && state.file && state.file.isUploaded ? (
                             <section className="uploaded-area">
                                 <UploadedFile />
                             </section>
-                        ) : (
-                            ""
-                        )}
+                        ) :
+                        ""
+                        }
                     </div>
-                )}
+                    )
+                }
         </ContextApp.Provider>
     );
 }

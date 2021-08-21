@@ -1,4 +1,24 @@
+import { useEffect } from "react";
+
 function UploadFileForm(props) {
+
+    useEffect(() => {
+        const dropArea = document.querySelector(".drop-area");
+        dropArea &&
+            dropArea.addEventListener("drop", (event) => {
+                event.preventDefault();
+                props.handleFileUpload(event, event.dataTransfer.files[0]);
+            });
+    });
+
+    useEffect(() => {
+        const dropArea = document.querySelector(".drop-area");
+        dropArea &&
+            dropArea.addEventListener("dragover", (event) => {
+                event.preventDefault();
+            });
+    });
+
     return (
         <form className="mt-3 space-y-3" action="#" method="POST">
         <div className="grid grid-cols-1 space-y-2">
@@ -9,10 +29,8 @@ function UploadFileForm(props) {
                 <label className="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
                     <div className="h-full w-full text-center flex flex-col items-center justify-center items-center  ">
                         <p className="pointer-none text-gray-500 ">
-                            <span className="text-sm">
-                                Перетащите файл
-                            </span>{" "}
-                            сюда <br /> или{" "}
+                            Перетащите файл
+                            <span className="font-semibold"> сюда</span> <br /> или{" "}
                             <span className="text-blue-600 hover:underline">
                                 выберите файл
                             </span>{" "}

@@ -8,6 +8,7 @@ import os
 import ffmpeg
 
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 store.handler = LocalFileHandler(base_path='storage', auto_make_dir=True, filters=[RandomizeFilename()])
 
 STORAGE_FOLDER = os.getenv('STORAGE_FOLDER', default='storage')
@@ -60,5 +61,5 @@ def upload():
             # ffmpeg.output(stream.audio, filename=).run()
             return jsonify({
                 'success': True,
-                'filenamse': stored_as
+                'filename': stored_as
             })

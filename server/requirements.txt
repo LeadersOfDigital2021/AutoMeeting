@@ -1,5 +1,7 @@
+asgiref==3.4.1
 click==8.0.1
 ffmpeg-python==0.2.0
+filestorage==0.0.6
 Flask==2.0.1
 future==0.18.2
 itsdangerous==2.0.1

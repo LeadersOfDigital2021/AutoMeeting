@@ -1,0 +1,9 @@
+version: '3.3'
+services:
+  server:
+    build: ./server
+    image: server:latest
+    ports:
+      - '8080:5000'
+    volumes:
+      - './server:/app'

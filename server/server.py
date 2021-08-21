@@ -8,6 +8,8 @@ import os
 import ffmpeg
 from flask_pymongo import PyMongo
 from werkzeug.utils import redirect
+from flask_cors import CORS
+import requests
 
 STORAGE_FOLDER = os.getenv('STORAGE_FOLDER', default='storage')
 ALLOWED_EXTENSIONS = {'mp4', 'mp3', 'mkv'}
@@ -19,6 +21,7 @@ MONGO_DB = os.getenv('MONGO_DB', default='db')
 
 
 app = Flask(__name__)
+CORS(app)
 app.config['MAX_CONTENT_LENGTH'] = 200 * 1000 * 1000  # MB
 app.config["MONGO_URI"] = f'mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB}'
 mongo = PyMongo(app)
@@ -85,3 +88,59 @@ def upload():
             'message': 'Invalid file format'
         })
     return '', 404
+
+def get_beauty(text):
+    offset = 0
+    txt_len = 30
+
+    text_out = []
+
+    txt_list = text.split()
+    while offset < len(text) + 3:
+        txt = " ".join(txt_list[offset:offset+txt_len])
+        offset += txt_len
+        r = requests.post('http://109.248.175.110:8885/beauty/', params={'text': txt}, headers={'Content-type': 'text/plain; charset=utf-8'})
+        if r.status_code < 400:
+            resp_text = json.loads(r.content)['text']
+            text_out.append(resp_text[:246+1])
+            offset -= len(resp_text[246+1:].split())
+    return text_out
+
+@app.route('/status/<id>')
+def status(id):
+    record = mongo.db.files.find_one({'id': id})
+    # del record['_id']
+    record_id = record['id']
+    files = {'audio_blob': open(os.path.join(STORAGE_FOLDER, record_id + '.wav'),'rb')}
+    if not 'stt_result' in record:
+        r = requests.post('http://109.248.175.110:8889/asr/', files=files)
+        speech_to_text = r.json()['r'][0]['response'][0]['text']
+
+        mongo.db.files.update({'_id': record['_id']},
+        {'$set': {
+            'stt_result': speech_to_text
+        }}, upsert=True)
+    else:
+        speech_to_text = record['stt_result']
+
+    print(speech_to_text)
+
+    if not 'gec_result' in record:
+        result = get_beauty(speech_to_text)
+        mongo.db.files.update({'_id': record['_id']},
+        {'$set': {
+            'gec_result': speech_to_text
+        }}, upsert=True)
+    else:
+        result = record['gec_result']
+    # r = requests.post('http://109.248.175.110:8885/beauty/', params={'text': speech_to_text})
+
+    print(result)
+
+    return jsonify({
+        'success': True,
+        'isPending': False,
+        'raw_text': speech_to_text,
+        'result': result
+        # 'data': str(r.content)
+    })

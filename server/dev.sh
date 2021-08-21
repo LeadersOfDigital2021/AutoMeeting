@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export FLASK_ENV=development
-export FLASK_APP=server
+ENV FLASK_ENV=development
+ENV FLASK_APP=server
 
 flask run

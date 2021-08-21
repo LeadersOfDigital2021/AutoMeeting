@@ -6,13 +6,24 @@ import hashlib
 import json
 import os
 import ffmpeg
-
-app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
-store.handler = LocalFileHandler(base_path='storage', auto_make_dir=True, filters=[RandomizeFilename()])
+from flask_pymongo import PyMongo
+from werkzeug.utils import redirect
 
 STORAGE_FOLDER = os.getenv('STORAGE_FOLDER', default='storage')
-ALLOWED_EXTENSIONS = {'mp4', 'mp3'}
+ALLOWED_EXTENSIONS = {'mp4', 'mp3', 'mkv'}
+MONGO_HOST = os.getenv('MONGO_HOST', default='localhost')
+MONGO_PORT = os.getenv('MONGO_PORT', default=27017)
+MONGO_USER = os.getenv('MONGO_USER')
+MONGO_PASSWORD = os.getenv('MONGO_PASSWORD')
+MONGO_DB = os.getenv('MONGO_DB', default='db')
+
+
+app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 200 * 1000 * 1000  # MB
+app.config["MONGO_URI"] = f'mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB}'
+mongo = PyMongo(app)
+store.handler = LocalFileHandler(base_path='storage', auto_make_dir=True, filters=[RandomizeFilename()])
+
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -49,17 +60,28 @@ def upload():
             })
         if file and allowed_file(file.filename):
             stored_as = store.save_data(filename=file.filename, data=file.read())
+            record_id = stored_as.split('.')[0]
             process = (
                 ffmpeg
                 .input(os.path.join(STORAGE_FOLDER, stored_as))
-                .output(os.path.join(STORAGE_FOLDER, stored_as + '.wav'), ac=1, f='wav')
+                .output(os.path.join(STORAGE_FOLDER, record_id + '.wav'), ac=1, ar=16000, f='wav')
                 .run_async(pipe_stdout=True, pipe_stderr=True)
             )
             out, err = process.communicate()
             print(out)
             # print(err)
             # ffmpeg.output(stream.audio, filename=).run()
+            mongo.db.files.insert({
+                'id': record_id,
+                'isPending': True
+            })
             return jsonify({
                 'success': True,
-                'filename': stored_as
+                'id': record_id,
+                'isPending': True
             })
+        return jsonify({
+            'success': False,
+            'message': 'Invalid file format'
+        })
+    return '', 404

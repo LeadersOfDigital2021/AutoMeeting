@@ -6,7 +6,7 @@ export const ContextApp = React.createContext();
 export const initialState = { 
     file: {},
     isProtocolCreating: false,
-    isWordDocCreated: false
+    isWordDocCreated: true
 };
 
 export const mainReducer = (state, action) => {
@@ -72,7 +72,8 @@ export const mainReducer = (state, action) => {
             });
             return {...state, file: {...state.file, data: { ...fileData, participants: [...fileData.participants] } }}; 
         case "SET_DOC_CREATED_STATUS":
-            return {...state, isWordDocCreated: !state.isWordDocCreated}
+            console.log('isWordDocCreated');
+            return {...state, isWordDocCreated: !state.isWordDocCreated};
         default:
             return initialState;
     }

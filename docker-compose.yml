@@ -25,6 +25,13 @@ services:
        MONGO_PASSWORD: root
        MONGO_DB: admin
        FLASK_ENV: development
+  document-server:
+    build: ./document-server
+    image: document-server:latest
+    ports:
+      - '8081:3000'
+    volumes:
+      - './document-server:/app'
   client:
     build: ./client
     image: client:latest

@@ -11,7 +11,7 @@ app.use(cors())
 app.use(express.json())
 
 app.get('/', (req, res) => {
-  return 'Templating server';
+  res.send('Templating server');
 })
 
 app.post('/', async (req, res) => {

@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from filestorage import store
 from filestorage.handlers import LocalFileHandler
 from filestorage.filters import RandomizeFilename
@@ -10,6 +10,7 @@ from flask_pymongo import PyMongo
 from werkzeug.utils import redirect
 from flask_cors import CORS
 import requests
+import io
 
 STORAGE_FOLDER = os.getenv('STORAGE_FOLDER', default='storage')
 ALLOWED_EXTENSIONS = {'mp4', 'mp3', 'mkv'}
@@ -185,7 +186,7 @@ def status(id):
         protocol_data = record['ir_result']
 
     print('IR-result')
-    print(protocol_data)
+    print(str(protocol_data))
     print('-------------')
 
     return jsonify({
@@ -199,8 +200,14 @@ def status(id):
 
 @app.route('/complete/<id>')
 def complete(id):
-    pass
+    record = mongo.db.files.find_one({'id': id})
+    r = requests.post('http://109.248.175.110:8886/protocol/', json=record['ir_result'])
+    return r.file
 
-@app.route('/download/<id>')
+@app.route('/download/<id>', methods=["GET"])
 def download(id):
-    pass
+    record = mongo.db.files.find_one({'id': id})
+    r = requests.post('http://109.248.175.110:8081/', json=record['ir_result'])
+    return send_file(
+        io.BytesIO(r.content), as_attachment=True, attachment_filename=id + '.docx',
+    )

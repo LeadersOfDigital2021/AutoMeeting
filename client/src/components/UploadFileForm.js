@@ -22,9 +22,14 @@ function UploadFileForm(props) {
     return (
         <form className="mt-3 space-y-3" action="#" method="POST">
         <div className="grid grid-cols-1 space-y-2">
-            <label className="text-sm font-bold text-gray-500 tracking-wide">
-                Прикрепите документ
-            </label>
+            <div className="flex space-x-4">
+
+                <label className="text-sm font-bold text-gray-500 tracking-wide">
+                    Прикрепите документ
+                </label>
+                <a href="/example.mkv" className="text-blue-600 hover:underline text-sm">Пример файла</a>
+
+            </div>
             <div className="drop-area flex items-center justify-center w-full">
                 <label className="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
                     <div className="h-full w-full text-center flex flex-col items-center justify-center items-center  ">

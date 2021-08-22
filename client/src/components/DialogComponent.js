@@ -14,16 +14,16 @@ function RecognizedSpeech() {
                         <i className="fa fa-arrow-left"></i> Вернуться
                     </label>
                     <div className="flex items-center justify-center w-full">
-                        <div class="flex flex-col flex-auto h-full p-6">
-                            <div class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
-                                <div class="flex flex-col h-full overflow-x-auto mb-4">
-                                    <div class="flex flex-col h-full">
-                                        <div class="col-start-1 col-end-8 p-3 rounded-lg">
-                                            <div class="flex flex-row items-center">
-                                                <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-400 flex-shrink-0">
+                        <div className="flex flex-col flex-auto h-full p-6">
+                            <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
+                                <div className="flex flex-col h-full overflow-x-auto mb-4">
+                                    <div className="flex flex-col h-full">
+                                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
+                                            <div className="flex flex-row items-center">
+                                                <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-400 flex-shrink-0">
                                                     A
                                                 </div>
-                                                <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                                                <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                                                     <div>
                                                         Hey How are you today?
                                                     </div>
@@ -31,12 +31,12 @@ function RecognizedSpeech() {
                                             </div>
                                         </div>
 
-                                        <div class="col-start-1 col-end-8 p-3 rounded-lg">
-                                            <div class="flex flex-row items-center">
-                                                <div class="flex items-center justify-center h-10 w-10 rounded-full bg-red-400 flex-shrink-0">
+                                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
+                                            <div className="flex flex-row items-center">
+                                                <div className="flex items-center justify-center h-10 w-10 rounded-full bg-red-400 flex-shrink-0">
                                                     B
                                                 </div>
-                                                <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                                                <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                                                     <div>
                                                         Lorem ipsum dolor sit
                                                         amet, consectetur
@@ -51,12 +51,12 @@ function RecognizedSpeech() {
                                             </div>
                                         </div>
 
-                                        <div class="col-start-1 col-end-8 p-3 rounded-lg">
-                                            <div class="flex flex-row items-center">
-                                                <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-400 flex-shrink-0">
+                                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
+                                            <div className="flex flex-row items-center">
+                                                <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-400 flex-shrink-0">
                                                     A
                                                 </div>
-                                                <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                                                <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                                                     <div>
                                                         Lorem ipsum dolor sit
                                                         amet !
@@ -65,12 +65,12 @@ function RecognizedSpeech() {
                                             </div>
                                         </div>
 
-                                        <div class="col-start-1 col-end-8 p-3 rounded-lg">
-                                            <div class="flex flex-row items-center">
-                                                <div class="flex items-center justify-center h-10 w-10 rounded-full bg-red-400 flex-shrink-0">
+                                        <div className="col-start-1 col-end-8 p-3 rounded-lg">
+                                            <div className="flex flex-row items-center">
+                                                <div className="flex items-center justify-center h-10 w-10 rounded-full bg-red-400 flex-shrink-0">
                                                     B
                                                 </div>
-                                                <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                                                <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                                                     <div>
                                                         Lorem ipsum dolor sit
                                                         amet consectetur

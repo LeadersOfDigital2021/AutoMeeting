@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useState, useEffect, useReducer } from "react";
+import { useState, useReducer } from "react";
 import axios from "./axios";
 
 import { toast } from "react-toastify";
@@ -24,7 +24,7 @@ function App() {
 
     const handleFileUpload = (event, dropedFile = null) => {
         let file = dropedFile ?? event.target.files[0];
-        if (!file) {
+        if(!file) {
             return;
         }
 
@@ -74,7 +74,6 @@ function App() {
 
                 axios.get(`status/${result.data.id}`).then((result) => {
                     console.log("get status:", result);
-                    console.log("raw_text:", result.data.raw_text);
                     dispatch({
                         type: "SET_IS_PENDING",
                         data: {

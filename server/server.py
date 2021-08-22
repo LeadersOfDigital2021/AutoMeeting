@@ -104,7 +104,10 @@ def get_beauty(text):
             resp_text = json.loads(r.content)['text']
             text_out.append(resp_text[:246+1])
             offset -= len(resp_text[246+1:].split())
-    return text_out
+
+    text_out = [x for x in text_out if x.strip(" \n")]
+
+    return " ".join(text_out)
 
 @app.route('/status/<id>')
 def status(id):
@@ -123,24 +126,81 @@ def status(id):
     else:
         speech_to_text = record['stt_result']
 
+    print('STT result:')
     print(speech_to_text)
+    print('-------------')
 
     if not 'gec_result' in record:
-        result = get_beauty(speech_to_text)
+        beauty_text = get_beauty(speech_to_text)
         mongo.db.files.update({'_id': record['_id']},
         {'$set': {
-            'gec_result': speech_to_text
+            'gec_result': beauty_text
         }}, upsert=True)
     else:
-        result = record['gec_result']
-    # r = requests.post('http://109.248.175.110:8885/beauty/', params={'text': speech_to_text})
+        beauty_text = record['gec_result']
 
-    print(result)
+    print('GEC-result')
+    print(beauty_text)
+    print('-------------')
+
+    if not 'ir_result' in record:
+        protocol_request = {'text': beauty_text}
+        r = requests.post('http://109.248.175.110:8886/protocol/', data=protocol_request)
+        protocol_extracted = r.json()
+
+        protocol_data = {
+            'presiding': '',
+            'secretary': '',
+            'topic': '',
+            'date': '',
+            'agenda': '',
+            'facts': [],
+            'participants': []
+        }
+
+        cnt = 0
+        fact = {}
+        for item in protocol_extracted:
+            if 'ТЕМА' in item:
+                protocol_data['topic'] = item['ТЕМА']
+            if 'ДАТА' in item:
+                protocol_data['date'] = item['ДАТА']
+            if 'ПОВЕСТКА' in item:
+                protocol_data['agenda'] = item['ПОВЕСТКА']
+            if 'ФАКТ' in item:
+                cnt += 1
+                fact = {
+                    'id': cnt,
+                    'data': item['ФАКТ']
+                }
+            if 'ИСПОЛНИТЕЛЬ' in item:
+                fact['responsible'] = item['ИСПОЛНИТЕЛЬ']
+                protocol_data['facts'].append(fact)
+
+        mongo.db.files.update({'_id': record['_id']},
+        {'$set': {
+            'ir_result': protocol_data
+        }}, upsert=True)
+    else:
+        protocol_data = record['ir_result']
+
+    print('IR-result')
+    print(protocol_data)
+    print('-------------')
 
     return jsonify({
         'success': True,
         'isPending': False,
         'raw_text': speech_to_text,
-        'result': result
-        # 'data': str(r.content)
+        'beauty_text': beauty_text,
+        'data': protocol_data
     })
+
+
+@app.route('/complete/<id>')
+def complete(id):
+    pass
+
+@app.route('/download/<id>')
+def download(id):
+    pass

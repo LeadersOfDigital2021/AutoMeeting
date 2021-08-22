@@ -1,0 +1,15 @@
+version: '2.3'
+
+services:
+  meetmin:
+    restart: always
+    container_name: meetmin
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: meetmin:master
+    volumes:
+      - .:/external
+    command: bash -c "gunicorn --access-logfile - -w 1 --bind 0.0.0.0:8886 app:app --timeout 15000"
+    ports:
+      - 8886:8886

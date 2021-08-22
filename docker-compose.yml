@@ -11,6 +11,10 @@ services:
       - '27017:27017'
     volumes:
       - './mongo/data:/data/db'
+  rabbitmq:
+    image: 'bitnami/rabbitmq:latest'
+    ports:
+      - '15672:15672'
   server:
     build: ./server
     image: server:latest

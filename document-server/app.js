@@ -1,34 +1,24 @@
 import * as fs from 'fs';
 import { TemplateHandler } from 'easy-template-x';
-import express from 'express'
+import cors from 'cors';
+import express from 'express';
 
 // const express = require('express')
 const app = express()
 const port = 3000
 
-// const applyTemplate = async (templateFileName, resultFileName, data) {
-//   const templateFile = fs.readFileSync(templateFileName);
+app.use(cors())
+app.use(express.json())
 
-//   const handler = new TemplateHandler();
-//   const doc = await handler.process(templateFile, data);
+app.get('/', (req, res) => {
+  return 'Templating server';
+})
 
-//   fs.writeFileSync(resultFileName, doc);
-// }
-
-app.get('/', async (req, res) => {
-  // 1. read template file
+app.post('/', async (req, res) => {
   const templateFile = fs.readFileSync('example.docx');
 
-  // 2. process the template
-  const data = {
-      posts: [
-          { author: 'Alon Bar', text: 'Very important\ntext here!' },
-          { author: 'Alon Bar', text: 'Forgot to mention that...' }
-      ]
-  };
-
   const handler = new TemplateHandler();
-  const doc = await handler.process(templateFile, data);
+  const doc = await handler.process(templateFile, req.body);
 
   // 3. save output
   var resultFile = 'template_output.docx';
